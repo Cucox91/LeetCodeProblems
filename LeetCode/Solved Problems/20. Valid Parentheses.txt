@@ -1,0 +1,46 @@
+bool IsValid(string s)
+{
+    if (s.Length <= 1)
+    {
+        return false;
+    }
+
+    string open = "([{";    // If Open Push.
+    Stack<char> chars = new Stack<char>();
+
+    foreach (var chr in s)
+    {
+        if (open.Contains(chr))
+        {
+            // Push.
+            chars.Push(chr);
+        }
+        else
+        {
+            //Pop and compare
+            if (chars.TryPeek(out char top))
+            {
+                if ((chr == ')' && top == '(') || (chr == ']' && top == '[') || (chr == '}' && top == '{'))
+                {
+                    chars.Pop();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    return chars.Count == 0; // Additionally we need to check if the stack is empty at the end.
+}
+
+Console.WriteLine(IsValid("()"));
+Console.WriteLine(IsValid("()[]{}"));
+Console.WriteLine(IsValid("(]"));
+Console.WriteLine(IsValid("({})"));
+Console.WriteLine(IsValid("){"));

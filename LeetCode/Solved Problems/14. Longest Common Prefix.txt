@@ -1,0 +1,101 @@
+// This can be implemented with a Trie. But because this is prefix it was too much work to implement the whole DS for only checking for failure on the first character.
+string LongestCommonPrefix(string[] strs)
+{
+    string prefix = "";
+    if (strs.Length == 0)
+    {
+        return prefix;
+    }
+
+    // If any of the elements is "" then return "".
+    if (strs.Any(v => v == ""))
+    {
+        return prefix;
+    }
+
+    if (strs.Length == 1)
+    {
+        return strs[0];
+    }
+
+    // We keep looping meanwhile:
+    // b - The letter match for each one of the strings
+    // c - We haven't reached yet the end of one of the strings.
+    int charIndex = 0;
+    int arrayIndex = 0;
+    char currentChar = strs[0][0];
+    while (true)
+    {
+        if (arrayIndex == strs.Length)
+        {
+            prefix += currentChar;
+            arrayIndex = 0;
+            if (charIndex < strs[arrayIndex].Length - 1)
+            {
+                charIndex++;
+                currentChar = strs[arrayIndex][charIndex];
+            }
+            else if (charIndex == strs[arrayIndex].Length - 1)
+            {
+                // prefix += currentChar;
+                break;
+            }
+        }
+
+        if (charIndex == strs[arrayIndex].Length)
+        {
+            break;
+        }
+
+        if (currentChar != strs[arrayIndex][charIndex])
+        {
+            break;
+        }
+
+        arrayIndex++;
+    }
+
+
+    return prefix;
+}
+
+Console.WriteLine(LongestCommonPrefix(new string[]
+{
+    "flower", "flower", "flower", "flower"
+}));
+
+Console.WriteLine(LongestCommonPrefix(new string[]
+{
+    "flower","flow","flight"
+}));
+
+Console.WriteLine(LongestCommonPrefix(new string[]
+{
+    "dog","racecar","car"
+}));
+
+Console.WriteLine(LongestCommonPrefix(new string[]
+{
+    ""
+}));
+
+// class Trie
+// {
+//     public List<TrieNode> _rootValues = new List<TrieNode>();
+
+//     public void Insert(string text)
+//     {
+//         var node =
+//     }
+
+//     private void Insert(string text, int index)
+//     {
+
+//     }
+// }
+
+// class TrieNode
+// {
+//     public string Value { get; set; }
+//     public List<TrieNode> Childs { get; set; } = new List<TrieNode>();
+// }
