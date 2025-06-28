@@ -1,0 +1,65 @@
+﻿int RomanToInt(string s)
+{
+    int i = 0;
+    int count = 0;
+    Dictionary<char, int> romanToInt = new Dictionary<char, int>();
+    romanToInt.Add('I', 1);
+    romanToInt.Add('V', 5);
+    romanToInt.Add('X', 10);
+    romanToInt.Add('L', 50);
+    romanToInt.Add('C', 100);
+    romanToInt.Add('D', 500);
+    romanToInt.Add('M', 1000);
+
+
+    while (i < s.Length)
+    {
+        if (s[i] == 'I' && i + 1 < s.Length && (s[i + 1] == 'V' || s[i + 1] == 'X'))
+        {
+            if (s[i + 1] == 'V')
+            {
+                count += 4;
+            }
+            else
+            {
+                count += 9;
+            }
+            i += 2;
+        }
+        else if (s[i] == 'X' && i + 1 < s.Length && (s[i + 1] == 'L' || s[i + 1] == 'C'))
+        {
+            if (s[i + 1] == 'L')
+            {
+                count += 40;
+            }
+            else
+            {
+                count += 90;
+            }
+            i += 2;
+        }
+        else if (s[i] == 'C' && i + 1 < s.Length && (s[i + 1] == 'D' || s[i + 1] == 'M'))
+        {
+            if (s[i + 1] == 'D')
+            {
+                count += 400;
+            }
+            else
+            {
+                count += 900;
+            }
+            i += 2;
+        }
+        else
+        {
+            count += romanToInt[s[i]];
+            i++;
+        }
+    }
+
+    return count;
+}
+
+Console.WriteLine(RomanToInt("III"));
+Console.WriteLine(RomanToInt("LVIII"));
+Console.WriteLine(RomanToInt("MCMXCIV"));

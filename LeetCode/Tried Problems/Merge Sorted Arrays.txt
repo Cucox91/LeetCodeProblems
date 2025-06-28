@@ -1,0 +1,85 @@
+using System.Globalization;
+using System.Text;
+
+int[] arr1 = new int[] { 1, 2, 3, 0, 0, 0 };
+int[] arr2 = new int[] { 2, 5, 6 };
+Merge(arr1, 3, arr2, 3);
+
+// int[] arr1 = new int[] { 1, 3, 5, 7, 0, 0, 0, 0 };
+// int[] arr2 = new int[] { 2, 4, 6, 8 };
+// Merge(arr1, 4, arr2, 4);
+
+// int[] arr1 = new int[] { 4, 5, 6, 0, 0, 0 };
+// int[] arr2 = new int[] { 1, 2, 3 };
+// Merge(arr1, 3, arr2, 3);
+
+// int[] arr1 = new int[] { 1 };
+// int[] arr2 = new int[] { };
+// Merge(arr1, 1, arr2, 0);
+
+// int[] arr1 = new int[] { 0 };
+// int[] arr2 = new int[] { 1 };
+// Merge(arr1, 0, arr2, 1);
+
+// int[] arr1 = new int[] { -1, 0, 0, 3, 3, 3, 0, 0, 0 };
+// int[] arr2 = new int[] { 1, 2, 2 };
+// Merge(arr1, 6, arr2, 3);
+
+//[-1,0,0,3,3,3,0,0,0]
+//[1,2,2]
+//6,3
+
+Console.WriteLine();
+
+// Easy Solution
+void Merge(int[] nums1, int m, int[] nums2, int n)
+{
+    if (m == 0)
+    {
+        nums2.CopyTo(nums1, 0);
+        return;
+    }
+
+    if (n == 0)
+    {
+        return;
+    }
+
+    int[] temp = new int[nums1.Length];
+    int indexTemp = 0;
+    int indexN1 = 0;
+    int indexN2 = 0;
+
+    while (indexTemp < temp.Length)
+    {
+        if (indexN2 == nums2.Length)
+        {
+            temp[indexTemp] = nums1[indexN1];
+            indexTemp++;
+            indexN1++;
+        }
+        else
+        {
+            if (nums1[indexN1] < nums2[indexN2])
+            {
+                temp[indexTemp] = nums1[indexN1];
+                indexTemp++;
+                indexN1++;
+            }
+            else
+            {
+                temp[indexTemp] = nums2[indexN2];
+                indexTemp++;
+                indexN2++;
+            }
+        }
+    }
+
+    if (indexN1 == m + 1 && indexN2 == n - 1 && indexTemp == temp.Length)
+    {
+        temp[indexTemp - 1] = nums2[indexN2];
+    }
+
+    temp.CopyTo(nums1, 0);
+}
+
