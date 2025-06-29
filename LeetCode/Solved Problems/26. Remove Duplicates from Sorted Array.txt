@@ -1,0 +1,33 @@
+int RemoveDuplicates(int[] nums)
+{
+    if (nums.Length <= 1)
+    {
+        return nums.Length;
+    }
+
+    int duplicates = 0;
+    int currentDifferent = 0;
+    int current = nums[0];
+    for (int i = 1; i < nums.Length; i++)
+    {
+        if (current == nums[i])
+        {
+            duplicates++;
+        }
+        else
+        {
+            current = nums[i];
+            nums[currentDifferent + 1] = current;
+            currentDifferent++;
+        }
+    }
+    return nums.Length - duplicates;
+}
+
+
+Console.WriteLine(RemoveDuplicates(new int[] { 1, 1, 2 }));
+Console.WriteLine(RemoveDuplicates(new int[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 }));
+Console.WriteLine(RemoveDuplicates(new int[] { 1 }));
+Console.WriteLine(RemoveDuplicates(new int[] { 0 }));
+Console.WriteLine(RemoveDuplicates(new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 }));
+Console.WriteLine(RemoveDuplicates(new int[] { -10, -8, 0, -1, 2, 3 }));

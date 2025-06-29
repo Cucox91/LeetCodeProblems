@@ -1,0 +1,58 @@
+IList<IList<int>> Generate(int numRows)
+{
+    IList<IList<int>> mainList = new List<IList<int>>();
+    if (numRows == 1)
+    {
+        var singleItem = new List<IList<int>>()
+        {
+            new List<int> { 1 }
+        };
+        return singleItem;
+    }
+    else
+    {
+        var currentLevel = 1;
+        var nextLevel = 2;
+        mainList.Add(new List<int> { 1 });
+        mainList.Add(new List<int> { 1, 1 });
+        while (mainList[currentLevel].Count < numRows)
+        {
+            mainList.Add(new List<int>());
+            for (int i = 0; i < mainList[currentLevel].Count; i++)
+            {
+                if (i == 0)
+                {
+                    mainList[nextLevel].Add(1);
+                }
+                if (i == mainList[currentLevel].Count - 1)
+                {
+                    mainList[nextLevel].Add(1);
+                    break;
+                }
+
+                mainList[nextLevel].Add(mainList[currentLevel][i] + mainList[currentLevel][i + 1]);
+            }
+
+            currentLevel++;
+            nextLevel++;
+
+        }
+    }
+
+    return mainList;
+}
+
+var results1 = Generate(30);
+PrintPascal(results1);
+
+void PrintPascal(IList<IList<int>> list)
+{
+    foreach (var sl in list)
+    {
+        foreach (var elem in sl)
+        {
+            Console.Write(elem + ",");
+        }
+        Console.WriteLine();
+    }
+}

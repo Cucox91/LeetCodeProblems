@@ -1,0 +1,36 @@
+int MySqrt(int x)
+{
+    if (x == 1)
+    {
+        return 1;
+    }
+
+    // We always start from half of the number and substracting.
+    decimal current = (int)Math.Ceiling(x / 2m);
+    // if (current * current > 100 && current * current > 10 * x)
+    // {
+    //     current = (int)Math.Ceiling(current / 10);
+    // }
+    while (current * current > x)
+    {
+        current = (int)Math.Ceiling(current / 2) + 1;
+    }
+
+    return (int)Math.Ceiling(current);
+}
+
+// Console.WriteLine(MySqrt(10));
+// Console.WriteLine((int)Math.Sqrt(10));
+
+Console.WriteLine(MySqrt(1764975709));
+Console.WriteLine((int)Math.Sqrt(1764975709));
+
+Console.WriteLine(MySqrt(1764975709) == (int)Math.Sqrt(1764975709));
+Console.WriteLine(MySqrt(183692038) == (int)Math.Sqrt(183692038));
+Console.WriteLine(MySqrt(2147395599) == (int)Math.Sqrt(2147395599));
+Console.WriteLine(MySqrt(10) == (int)Math.Sqrt(10));
+Console.WriteLine(MySqrt(0) == (int)Math.Sqrt(0));
+Console.WriteLine(MySqrt(1) == (int)Math.Sqrt(1));
+Console.WriteLine(MySqrt(4) == (int)Math.Sqrt(4));
+Console.WriteLine(MySqrt(8) == (int)Math.Sqrt(8));
+Console.WriteLine(MySqrt(9) == (int)Math.Sqrt(9));
