@@ -1,0 +1,61 @@
+bool IsStrobogrammatic(string num)
+{
+    if (num.Length == 1)
+    {
+        if ("018".Contains(num))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    int i = 0;
+    int j = num.Length - 1;
+    HashSet<char> invalid = new HashSet<char>();
+    invalid.Add('2');
+    invalid.Add('3');
+    invalid.Add('4');
+    invalid.Add('5');
+    invalid.Add('7');
+
+    while (i <= j)
+    {
+        if (num[i] == '0' && num[j] != '0')
+        {
+            return false;
+        }
+        else if (num[i] == '1' && num[j] != '1')
+        {
+            return false;
+        }
+        else if (num[i] == '6' && num[j] != '9')
+        {
+            return false;
+        }
+        else if (num[i] == '8' && num[j] != '8')
+        {
+            return false;
+        }
+        else if (num[i] == '9' && num[j] != '6')
+        {
+            return false;
+        }
+        else if (invalid.Contains(num[i]))
+        {
+            return false;
+        }
+
+        i++;
+        j--;
+    }
+
+
+    return true;
+}
+
+Console.WriteLine(IsStrobogrammatic("69"));
+Console.WriteLine(IsStrobogrammatic("88"));
+Console.WriteLine(IsStrobogrammatic("962"));
+Console.WriteLine(IsStrobogrammatic("6969"));
+Console.WriteLine(IsStrobogrammatic("8008"));
+Console.WriteLine(IsStrobogrammatic("1111"));

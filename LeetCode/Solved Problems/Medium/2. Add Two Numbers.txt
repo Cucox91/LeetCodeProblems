@@ -1,0 +1,36 @@
+ListNode AddTwoNumbers(ListNode l1, ListNode l2)
+{
+    int reminder = 0;
+    int current1 = 0;
+    int current2 = 0;
+    ListNode newNumber = new ListNode();
+    var first = newNumber;
+
+    while (l1 != null || l2 != null)
+    {
+        current1 = l1 != null ? l1.val : 0;
+        current2 = l2 != null ? l2.val : 0;
+
+        var sum = current1 + current2 + reminder;
+        reminder = sum > 9 ? 1 : 0;
+        newNumber.val = reminder == 0 ? sum : sum - 10;
+
+        l1 = l1 != null ? l1.next : null;
+        l2 = l2 != null ? l2.next : null;
+
+        if (l1 != null || l2 != null)
+        {
+            newNumber.next = new ListNode();
+            newNumber = newNumber.next;
+        }
+    }
+
+    if (reminder == 1)
+    {
+        newNumber.next = new ListNode { val = 1 };
+    }
+
+    return first;
+}
+
+

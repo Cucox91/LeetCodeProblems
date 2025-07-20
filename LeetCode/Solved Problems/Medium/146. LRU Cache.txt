@@ -1,0 +1,162 @@
+
+
+LRUCache myCache = new LRUCache(2);
+Console.WriteLine("null");
+
+myCache.Put(1, 1);
+Console.WriteLine("null");
+
+myCache.Put(2, 2);
+Console.WriteLine("null");
+
+Console.WriteLine(myCache.Get(1));
+
+myCache.Put(3, 3);
+Console.WriteLine("null");
+
+Console.WriteLine(myCache.Get(2));
+
+myCache.Put(4, 4);
+Console.WriteLine("null");
+
+Console.WriteLine(myCache.Get(1));
+Console.WriteLine(myCache.Get(3));
+Console.WriteLine(myCache.Get(4));
+
+
+public class MyListNode
+{
+    public int Value { get; set; }
+    public int Key { get; set; }
+
+    public MyListNode? Next { get; set; }
+    public MyListNode? Previous { get; set; }
+}
+
+public class LRUCache
+{
+    private int _capacity;
+    private Dictionary<int, MyListNode> _myDict;
+    private MyListNode? _head;
+    private MyListNode? _tail;
+
+
+    public LRUCache(int capacity)
+    {
+        _capacity = capacity;
+        _myDict = new Dictionary<int, MyListNode>(capacity: capacity);
+    }
+
+    public int Get(int key)
+    {
+        // Element doesnt Exists then return -1. Otherwise Proceed..
+        if (!_myDict.TryGetValue(key, out MyListNode? currentNode))
+        {
+            return -1;
+        }
+
+        var returnValue = currentNode.Value;
+        // Now we need to move the element to the beginning of the List.
+        MoveToFirst(currentNode);
+        return returnValue;
+    }
+
+    public void Put(int key, int value)
+    {
+        /*To add we have three options:
+            1 - The List is empty.
+            2 - The element exists. Update.
+            3 - The Element doesn't exists and need to be added
+                3.1 - The List is not full. We add to the tail and we move to the begin.
+                3.2 - The List is full. We remove the last element and apply 3.1.
+        */
+
+        if (_myDict.Count == 0)
+        {
+            var newNode = new MyListNode { Key = key, Value = value };
+            _myDict.Add(key, newNode);
+            _head = newNode;
+            _tail = _head;
+            return;
+        }
+
+        if (_myDict.TryGetValue(key, out MyListNode? node))
+        {
+            node.Value = value;
+            MoveToFirst(node);
+        }
+        else
+        {
+            if (_myDict.Count < _capacity)
+            {
+                var newNode = new MyListNode
+                {
+                    Key = key,
+                    Value = value,
+                    Previous = _tail
+                };
+                _tail!.Next = newNode;
+                _tail = _tail.Next;
+                _myDict.Add(key, newNode);
+                MoveToFirst(newNode);
+            }
+            else
+            {
+                _myDict.Remove(_tail!.Key);
+                _tail.Key = key;
+                _tail.Value = value;
+                _myDict.Add(key, _tail);
+                MoveToFirst(_tail);
+            }
+        }
+    }
+
+    private void MoveToFirst(MyListNode node)
+    {
+        /* In all cases that we touch the DS we want to move the newest added or latest readed key to the beginning of the list.
+            We have 5 cases:
+            1 - The List is Empty. This never happens on my code because we have the element already.
+            2 - There is only one element. We do nothing because this is already sorted.
+            3 - The element is the Head. We do nothing because this is already sorted.
+            4 - The element is on the middle.
+            5 - The element is on the tail.
+        */
+
+        if (_myDict.Count == 1 || node == _head)
+        {
+            return;
+        }
+
+        if (node == _tail)
+        {
+            // We make previous the new tail.
+            _tail = _tail.Previous;
+            _tail!.Next = null;
+
+            // We add the node as head. But before we connect it with the current head.
+            node.Next = _head;
+            _head!.Previous = node;
+            node.Previous = null;
+            _head = node;
+            return;
+        }
+
+        // Case for when is in the middle.
+        if (node.Next != null && node.Previous != null)
+        {
+            // We already have the node.
+            // We connect the Prevoius and the next.
+            var previous = node.Previous;
+            var next = node.Next;
+            previous.Next = next;
+            next.Previous = previous;
+
+            // Then we move the node to the head.
+            node.Next = _head;
+            _head!.Previous = node;
+            node.Previous = null;
+            _head = node;
+            return;
+        }
+    }
+}

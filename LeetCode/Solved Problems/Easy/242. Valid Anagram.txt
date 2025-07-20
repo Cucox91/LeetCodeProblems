@@ -1,0 +1,27 @@
+
+// Not the most elegant solution.
+bool IsAnagram(string s, string t)
+{
+    if (s.Length != t.Length)
+    {
+        return false;
+    }
+    var s1 = s.ToCharArray().Order().ToArray();
+    var t2 = t.ToCharArray().Order().ToArray();
+
+    for (int i = 0; i < s1.Length; i++)
+    {
+        if (s1[i] != t2[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+
+IsAnagram("anagram", "nagaram");
+Console.WriteLine(IsAnagram("anagram", "nagaram"));
+Console.WriteLine(IsAnagram("rat", "car"));

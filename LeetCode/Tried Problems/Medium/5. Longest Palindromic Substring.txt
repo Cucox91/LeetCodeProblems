@@ -1,0 +1,132 @@
+
+string LongestPalindrome(string s)
+{
+    HashSet<string> memorized = new HashSet<string>();
+    return LongestPalindrome2p5(s, memorized);
+    // return LongestPalindrome2p5(s, 0, s.Length - 1);
+}
+
+//Best 2020 ms
+string LongestPalindrome2(string s, HashSet<string> memorized)
+{
+    if (string.IsNullOrEmpty(s) || memorized.Contains(s))
+    {
+        return "";
+    }
+
+    // Check if is me. If Not Then Recursion. Else Return me.
+    int lower = 0;
+    int upper = s.Length - 1;
+
+    bool different = false;
+    while (lower <= upper)
+    {
+        if (s[lower] != s[upper])
+        {
+            different = true;
+        }
+        lower++;
+        upper--;
+    }
+
+    if (different)
+    {
+        //Recursion
+        if (!memorized.Contains(s)) // Not Memorized
+        {
+            memorized.Add(s);
+            var result1 = LongestPalindrome2(s.Substring(0, s.Length - 1), memorized);
+            var result2 = LongestPalindrome2(s.Substring(1, s.Length - 1), memorized);
+            return result1.Length > result2.Length ? result1 : result2;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    return s;
+}
+string LongestPalindrome2p5(string s, HashSet<string> memorized)
+{
+    if (string.IsNullOrEmpty(s) || memorized.Contains(s))
+    {
+        return "";
+    }
+
+    // Check if is me. If Not Then Recursion. Else Return me.
+    int lower = 0;
+    int upper = s.Length - 1;
+
+    bool different = false;
+    List<string> sublist = new List<string>();
+    while (lower < upper)
+    {
+        if (upper - lower > 1)
+        {
+            sublist.Add(s.Substring(lower, upper - lower - 1));
+        }
+        if (s[lower] != s[upper])
+        {
+            different = true;
+            break;
+        }
+        lower++;
+        upper--;
+    }
+
+    if (different)
+    {
+        foreach (var item in sublist)
+        {
+            if (!IsPalindormeSmall(item))
+            {
+                memorized.Add(item);
+            }
+        }
+
+        //Recursion
+        if (!memorized.Contains(s)) // Not Memorized
+        {
+            memorized.Add(s);
+            var result1 = LongestPalindrome2p5(s.Substring(0, s.Length - 1), memorized);
+            var result2 = LongestPalindrome2p5(s.Substring(1, s.Length - 1), memorized);
+            return result1.Length > result2.Length ? result1 : result2;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    return s;
+}
+
+bool IsPalindormeSmall(string s)
+{
+    int lower = 0;
+    int upper = s.Length - 1;
+    while (lower <= upper)
+    {
+        if (s[lower] != s[upper])
+        {
+            return false;
+        }
+        lower++;
+        upper--;
+    }
+    return true;
+}
+
+
+Console.WriteLine(LongestPalindrome("babad"));
+Console.WriteLine(LongestPalindrome("cbbd"));
+Console.WriteLine(LongestPalindrome("babaddtattarrattatddetartrateedredividerb"));
+Console.WriteLine(LongestPalindrome("bsnetpqmwhqjunkooftuosgkmkxpmvuehtlpwpktltwlvpdaycnhewdbdrhluyjldecezujgxixehsmjjuyerpllrvzqskizkulqzowzfvqcdsllvgupndbaiuzihcxklvxbodpnrymwobhlvllybdlfabfvnizjpriapuzszdhohfgezayokrivbgbgingspoxsridokhwekawchjdcpylvefubulvxneuizglrjktfcdirwnpqztdpsicslzaeiaibrepifxpxfkczwoumkkuaqkbjhxvasxflmrctponwwenvmtdaqaavubyrzbqjbjxpejmucwunanxwpomqyondyjuzxmzpevxqmbkrwcpdiiph"));
+Console.WriteLine("Check This Case it should be: bacab");
+Console.WriteLine(LongestPalindrome("bacabab"));
+
+var longest = "bsnetpqmwhqjunkooftuosgkmkxpmvuehtlpwpktltwlvpdaycnhewdbdrhluyjldecezujgxixehsmjjuyerpllrvzqskizkulqzowzfvqcdsllvgupndbaiuzihcxklvxbodpnrymwobhlvllybdlfabfvnizjpriapuzszdhohfgezayokrivbgbgingspoxsridokhwekawchjdcpylvefubulvxneuizglrjktfcdirwnpqztdpsicslzaeiaibrepifxpxfkczwoumkkuaqkbjhxvasxflmrctponwwenvmtdaqaavubyrzbqjbjxpejmucwunanxwpomqyondyjuzxmzpevxqmbkrwcpdiiph";
+longest += "bsnetpqmwhqjunkooftuosgkmkxpmvuehtlpwpktltwlvpdaycnhewdbdrhluyjldecezujgxixehsmjjuyerpllrvzqskizkulqzowzfvqcdsllvgupndbaiuzihcxklvxbodpnrymwobhlvllybdlfabfvnizjpriapuzszdhohfgezayokrivbgbgingspoxsridokhwekawchjdcpylvefubulvxneuizglrjktfcdirwnpqztdpsicslzaeiaibrepifxpxfkczwoumkkuaqkbjhxvasxflmrctponwwenvmtdaqaavubyrzbqjbjxpejmucwunanxwpomqyondyjuzxmzpevxqmbkrwcpdiiph";
+longest += "bsnetpqmwhqjunkooftuosgkmkxpmvuehtlpwpktltwlvpdaycnhewdbdrhluyjldecezujgxixehsmjjuyerpllrvzqskizkulqzowzfvqcdsllvgupndbaiuzihcxklvxbodpnrymwobhlvllybdlfabfvnizjpriapuzszdhohfgezayokrivbgbgingspoxsridokhwekawchjdcpylvefubulvxneuizglrjktfcdirwnpqztdpsicslzaeiaibrepifxpxfkczwoumkkuaqkbjhxvasxflmrctponwwenvmtdaqaavubyrzbqjbjxpejmucwunanxwpomqyondyjuzxmzpevxqmbkrwcpdiiph";
+Console.WriteLine(LongestPalindrome(longest));
