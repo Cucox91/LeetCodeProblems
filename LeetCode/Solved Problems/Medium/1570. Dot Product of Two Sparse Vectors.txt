@@ -1,0 +1,39 @@
+// Your SparseVector object will be instantiated and called as such:
+using System.Numerics;
+
+SparseVector v1 = new SparseVector([0, 1, 0, 0, 2, 0, 0]);
+SparseVector v2 = new SparseVector([1, 0, 0, 0, 3, 0, 4]);
+int ans = v1.DotProduct(v2);
+Console.WriteLine(ans);
+
+public class SparseVector
+{
+    private Dictionary<int, int> _vector = new Dictionary<int, int>();
+
+    public SparseVector(int[] nums)
+    {
+        for (int i = 0; i < nums.Length; i++)
+        {
+            if (nums[i] != 0)
+            {
+                _vector.Add(i, nums[i]);
+            }
+        }
+    }
+
+    // Return the dotProduct of two sparse vectors
+    public int DotProduct(SparseVector vec)
+    {
+        int result = 0;
+        foreach (var key in _vector.Keys)
+        {
+            if (vec._vector.TryGetValue(key, out int v2))
+            {
+                result += _vector[key] * v2;
+            }
+        }
+
+        return result;
+    }
+}
+

@@ -1,0 +1,47 @@
+using LeetCode;
+
+
+
+public class Solution
+{
+    public int AverageOfSubtree(TreeNode root)
+    {
+        int sum = 0;
+        int count = 0;
+        return AverageOfSubtree(root, out sum, out count);
+    }
+
+    private int AverageOfSubtree(TreeNode root, out int sum, out int count)
+    {
+        int matchLeft = 0;
+        int matchRight = 0;
+
+        int sumLeft = 0;
+        int sumRight = 0;
+
+        int countLeft = 0;
+        int countRight = 0;
+
+        if (root.left != null)
+        {
+            matchLeft = AverageOfSubtree(root.left, out sumLeft, out countLeft);
+        }
+
+        if (root.right != null)
+        {
+            matchRight = AverageOfSubtree(root.right, out sumRight, out countRight);
+        }
+
+
+        sum = sumLeft + sumRight + root.val;
+        count = countLeft + countRight + 1;
+
+        var totalMatch = matchLeft + matchRight;
+        if ((int)Math.Floor(sum / (float)count) == root.val)
+        {
+            totalMatch = totalMatch + 1;
+        }
+
+        return totalMatch;
+    }
+}
