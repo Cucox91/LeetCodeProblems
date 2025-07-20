@@ -1,0 +1,105 @@
+using System.Reflection.Metadata;
+using LeetCode;
+
+Node root = new Node { val = 3 };
+
+Node node5 = new Node { val = 5, parent = root };
+root.left = node5;
+
+Node node1 = new Node { val = 1, parent = root };
+root.right = node1;
+
+Node node6 = new Node { val = 6, parent = node5 };
+node5.left = node6;
+Node node2 = new Node { val = 2, parent = node5 };
+node5.right = node2;
+
+Node node0 = new Node { val = 0, parent = node1 };
+node1.left = node0;
+Node node8 = new Node { val = 8, parent = node1 };
+node1.right = node8;
+
+Node node7 = new Node { val = 7, parent = node2 };
+node2.left = node7;
+Node node4 = new Node { val = 4, parent = node2 };
+node2.right = node4;
+
+
+Solution s = new Solution();
+// s.LowestCommonAncestor(node5, node1);
+// s.LowestCommonAncestor(node1, node5);
+// s.LowestCommonAncestor(node5, node4);
+s.LowestCommonAncestor(node4, node5);
+
+public class Solution
+{
+    /*
+    I will start visiting the nodes from a starting one. And mark them as visited. If one of them find the path I will start backtracking and add the element to the path list
+    */
+
+    public Node LowestCommonAncestor(Node p, Node q)
+    {
+        // I will pick one of both. And start doing a search and marking with a dictionary.
+        // If I cant find the element on a branch and childs, then I remove it from the dictionary.
+        HashSet<int> visited = new HashSet<int>();
+        List<Node> path = new List<Node>();
+        // path.Push(p);
+        visited.Add(p.val);
+        FindPath(p, q, visited, path);
+
+        Node highest = path[0]!;
+        int i = 0;
+        while (i < path.Count - 1)
+        {
+            if (path[i].parent == path[i + 1])
+            {
+                highest = path[i + 1]!;
+            }
+            i++;
+        }
+
+        return highest;
+    }
+
+    private bool FindPath(Node current, Node goal, HashSet<int> visited, List<Node> path)
+    {
+        visited.Add(current.val);
+        if (current.val == goal.val)
+        {
+            path.Add(current);
+            return true;
+        }
+
+        if (current.left != null && !visited.Contains(current.left.val))
+        {
+            var leftResult = FindPath(current.left, goal, visited, path);
+            if (leftResult)
+            {
+                path.Add(current);
+                return true;
+            }
+        }
+
+        if (current.right != null && !visited.Contains(current.right.val))
+        {
+            var rightResult = FindPath(current.right, goal, visited, path);
+            if (rightResult)
+            {
+                path.Add(current);
+                return true;
+            }
+        }
+
+        if (current.parent != null && !visited.Contains(current.parent.val))
+        {
+            var parentResult = FindPath(current.parent, goal, visited, path);
+            if (parentResult)
+            {
+                path.Add(current);
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
