@@ -1,0 +1,51 @@
+using System.Collections.Immutable;
+using System.Linq;
+
+
+var nums = new int[] { 1, 2, 3 };
+Solution s = new Solution();
+
+var result = s.Subsets(nums);
+foreach (var collection in result)
+{
+    Console.Write("[");
+    foreach (var item in collection)
+    {
+        Console.Write(item.ToString() + ',');
+    }
+    Console.WriteLine("]");
+}
+
+
+public class Solution
+{
+    public IList<IList<int>> Subsets(int[] nums)
+    {
+        List<List<int>> mySubsets = new List<List<int>>();
+        mySubsets.Add(new List<int>());
+
+        int j = 0;
+        int i = 0;
+        while (i < nums.Length)
+        {
+            if (!mySubsets[j].Contains(nums[i]))
+            {
+                var newElement = new List<int>(mySubsets[j]);
+                newElement.Add(nums[i]);
+                if (!mySubsets.Any(innerList => innerList.SequenceEqual(newElement)))
+                {
+                    mySubsets.Add(newElement);
+                }
+            }
+            j++;
+
+            if (j == mySubsets.Count - 1)
+            {
+                i++;
+                j = 0;
+            }
+        }
+
+        return mySubsets.Cast<IList<int>>().ToList();
+    }
+}
