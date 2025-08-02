@@ -1,0 +1,33 @@
+
+Solution s = new Solution();
+
+Console.WriteLine(s.ValidPalindrome("aba"));
+Console.WriteLine(s.ValidPalindrome("abca"));
+Console.WriteLine(s.ValidPalindrome("abc"));
+Console.WriteLine(s.ValidPalindrome("aguokepatgbnvfqmgmlcupuufxoohdfpgjdmysgvhmvffcnqxjjxqncffvmhvgsymdjgpfdhooxfuupuculmgmqfvnbgtapekouga"));
+Console.WriteLine(s.ValidPalindrome("eceec"));
+
+public class Solution
+{
+    public bool ValidPalindrome(string s)
+    {
+        var result = ValidPalindrome(s, 0, s.Length - 1, 0);
+        return result;
+    }
+
+    private bool ValidPalindrome(string s, int lowIndex, int upIndex, int diff)
+    {
+        if (lowIndex > upIndex && diff <= 1) return true;
+        if (lowIndex > s.Length - 1 || upIndex < 0 || diff > 1) return false;
+
+        if (s[lowIndex] == s[upIndex])
+        {
+            return ValidPalindrome(s, lowIndex + 1, upIndex - 1, diff);
+        }
+
+        var left = ValidPalindrome(s, lowIndex + 1, upIndex, diff + 1);
+        var right = ValidPalindrome(s, lowIndex, upIndex - 1, diff + 1);
+
+        return left || right;
+    }
+}

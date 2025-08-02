@@ -1,26 +1,26 @@
 namespace LeetCode;
 
-public class Node
+public class TreeNode
 {
     public int val { get; set; }
 
-    public Node? left { get; set; }
-    public Node? right { get; set; }
-    public Node? parent { get; set; }
+    public TreeNode? left { get; set; }
+    public TreeNode? right { get; set; }
+    public TreeNode? parent { get; set; }
 
-    public Node()
+    public TreeNode()
     {
         
     }
 
-    public Node(int val, Node? left, Node? right)
+    public TreeNode(int val, TreeNode? left, TreeNode? right)
     {
         this.val = val;
         this.left = left;
         this.right = right;
     }
 
-    public Node(int val, Node? left, Node? right, Node? parent)
+    public TreeNode(int val, TreeNode? left, TreeNode? right, TreeNode? parent)
     {
         this.val = val;
         this.left = left;

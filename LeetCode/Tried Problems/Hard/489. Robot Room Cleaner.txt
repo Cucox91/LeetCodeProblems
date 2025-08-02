@@ -1,0 +1,126 @@
+
+// This is the robot's control interface.
+// You should not implement it, or speculate about its implementation
+interface Robot
+{
+    // Returns true if the cell in front is open and robot moves into the cell.
+    // Returns false if the cell in front is blocked and robot stays in the current cell.
+    public bool Move();
+
+    // Robot will stay in the same cell after calling turnLeft/turnRight.
+    // Each turn will be 90 degrees.
+    public void TurnLeft();
+    public void TurnRight();
+
+    // Clean the current cell.
+    public void Clean();
+}
+
+
+class Solution
+{
+    public void CleanRoom(Robot robot)
+    {
+        CleanRoom(robot, 0, 0, 0, new HashSet<string>(), new Stack<string>());
+    }
+
+
+    /// <summary>
+    /// It will allow the robot to move around the are and to keep visited places and the path the robot took.
+    /// </summary>
+    /// <param name="robot">My Robot</param>
+    /// <param name="posX">Initially 0</param>
+    /// <param name="posY">Initially 0</param>
+    /// <param name="direction">N:0,S:1,E:2,W:3. Initially N</param>
+    /// <param name="visited">Mark the visited Places</param>
+    /// <param name="path">It will contain the return path in case it get stuck.</param> 
+    /// <summary>
+    private void CleanRoom(Robot robot, int posX, int posY, int direction, HashSet<string> visited, Stack<string> path)
+    {
+        // First thing I do is to clean where I moved to.
+        var position = $"{posX},{posY}";
+        if (!visited.Contains(position))
+        {
+            robot.Clean();
+            visited.Add(position);
+            path.Push(position);
+        }
+
+        // Try to move to the first valid direction you can find.
+        var nextPosition = MapNextPos(posX, posY, direction);
+
+        int tries = 0;
+        while (visited.Contains($"{nextPosition.px},{nextPosition.py}") && !robot.Move() && tries < 4)
+        {
+            //by default we turn left.
+            robot.TurnLeft();
+            direction = CalculateNewDirection(direction, false);
+            nextPosition = MapNextPos(posX, posY, direction);
+            tries++;
+        }
+
+
+        // If we tried 4 times this meant that we can't move to a new place and we will need to move back. 
+        // Otherwise we move to the next place. (Already moved but need to register and call)
+        if (tries == 4)
+        {
+            if (path.TryPop(out string? pathStep))
+            {
+                var split = pathStep.Split(',');
+                posX = int.Parse(split[0]);
+                posY = int.Parse(split[1]);
+                CleanRoom(robot, posX, posY, direction, visited, path);
+            }
+        }
+        else
+        {
+            CleanRoom(robot, nextPosition.px, nextPosition.py, direction, visited, path);
+        }
+    }
+
+    private int CalculateNewDirection(int direction, bool turningRight)
+    {
+        if (turningRight)
+        {
+            direction++;
+            if (direction > 3)
+            {
+                direction = 0;
+            }
+        }
+        else
+        {
+            direction--;
+            if (direction < 0)
+            {
+                direction = 3;
+            }
+        }
+        return direction;
+    }
+
+    private (int px, int py) MapNextPos(int posX, int posY, int newDirection)
+    {
+        (int px, int py) tuple = new(posX, posY);
+        switch (newDirection)
+        {
+            // North (0,-1)
+            case 0:
+                tuple.px += -1;
+                break;
+            // South (0,1)
+            case 1:
+                tuple.px += 1;
+                break;
+            // East (1,0)
+            case 2:
+                tuple.py += 1;
+                break;
+            // West (-1,0)
+            case 3:
+                tuple.py += -1;
+                break;
+        }
+        return tuple;
+    }
+}

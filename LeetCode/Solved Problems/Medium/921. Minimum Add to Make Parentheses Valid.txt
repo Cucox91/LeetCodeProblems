@@ -1,0 +1,38 @@
+
+Solution s = new Solution();
+
+var case1 = "())";
+var case2 = "(((";
+var case3 = "()))";
+
+Console.WriteLine(s.MinAddToMakeValid(case1));
+Console.WriteLine(s.MinAddToMakeValid(case2));
+Console.WriteLine(s.MinAddToMakeValid(case3));
+
+public class Solution
+{
+    public int MinAddToMakeValid(string s)
+    {
+        if (s.Length == 0) return 0;
+        int openP = 0;
+        int closeP = 0;
+
+        foreach (var chr in s)
+        {
+            if (chr == '(')
+            {
+                openP++;
+            }
+            else if (chr == ')' && openP > 0)
+            {
+                openP--;
+            }
+            else
+            {
+                closeP++;
+            }
+        }
+        return Math.Abs(openP - closeP);
+
+    }
+}

@@ -1,0 +1,71 @@
+Solution s = new Solution();
+
+int[][] matrix1 = new int[][]
+{
+    [1,2,3],
+    [4,5,6],
+    [7,8,9]
+ };
+
+Solution.PrintMatrix(matrix1);
+
+s.Rotate(matrix1);
+
+Solution.PrintMatrix(matrix1);
+
+
+
+
+public class Solution
+{
+    public void Rotate(int[][] matrix)
+    {
+        Transpose(matrix);
+        SwapColumns(matrix);
+    }
+
+    private void Transpose(int[][] matrix)
+    {
+        for (int diagonalRowIndex = 0; diagonalRowIndex < matrix.Length; diagonalRowIndex++)
+        {
+            for (int column = diagonalRowIndex; column < matrix[diagonalRowIndex].Length; column++)
+            {
+                int swap = matrix[diagonalRowIndex][column];
+                matrix[diagonalRowIndex][column] = matrix[column][diagonalRowIndex];
+                matrix[column][diagonalRowIndex] = swap;
+            }
+        }
+    }
+
+    private void SwapColumns(int[][] matrix)
+    {
+        int leftColIndex = 0;
+        int rightColIndex = matrix.Length - 1;
+
+        while (leftColIndex < rightColIndex)
+        {
+            for (int row = 0; row < matrix[leftColIndex].Length; row++)
+            {
+                int swap = matrix[row][leftColIndex];
+                matrix[row][leftColIndex] = matrix[row][rightColIndex];
+                matrix[row][rightColIndex] = swap;
+            }
+            leftColIndex++;
+            rightColIndex--;
+        }
+
+    }
+
+    public static void PrintMatrix(int[][] matrix)
+    {
+        for (int col = 0; col < matrix.Length; col++)
+        {
+            Console.Write("[ ");
+            for (int row = 0; row < matrix[col].Length; row++)
+            {
+                Console.Write(matrix[col][row].ToString() + " ");
+            }
+            Console.WriteLine("]");
+        }
+    }
+}

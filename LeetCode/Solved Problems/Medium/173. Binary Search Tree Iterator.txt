@@ -1,0 +1,79 @@
+using LeetCode;
+
+// Create Nodes
+var node7 = new TreeNode { val = 7 };
+var node3 = new TreeNode { val = 3 };
+var node15 = new TreeNode { val = 15 };
+var node9 = new TreeNode { val = 9 };
+var node20 = new TreeNode { val = 20 };
+
+//Add Parents
+node3.parent = node7;
+node15.parent = node7;
+node9.parent = node15;
+node20.parent = node15;
+
+// Set Left and Righ
+node7.left = node3;
+node7.right = node15;
+node15.left = node9;
+node15.right = node20;
+
+BSTIterator bsti = new BSTIterator(node7);
+
+Console.WriteLine(bsti.Next());
+Console.WriteLine(bsti.Next());
+Console.WriteLine(bsti.HasNext());
+Console.WriteLine(bsti.Next());
+Console.WriteLine(bsti.HasNext());
+Console.WriteLine(bsti.Next());
+Console.WriteLine(bsti.HasNext());
+Console.WriteLine(bsti.Next());
+Console.WriteLine(bsti.HasNext());
+
+public class BSTIterator
+{
+    private TreeNode? _root;
+    private Stack<TreeNode> _myStack = new Stack<TreeNode>();
+
+    public BSTIterator(TreeNode root)
+    {
+        PopulateStackToLeftiest(root);
+    }
+
+    public int Next()
+    {
+        if (_myStack.TryPop(out TreeNode? node))
+        {
+            if (node.right != null)
+            {
+                PopulateStackToLeftiest(node.right);
+            }
+            return node.val;
+        }
+        else
+        {
+            return int.MinValue;
+        }
+    }
+
+    public bool HasNext()
+    {
+        return _myStack.TryPeek(out TreeNode? current);
+    }
+
+    private void PopulateStackToLeftiest(TreeNode current)
+    {
+        _myStack.Push(current);
+
+        if (current.left != null)
+        {
+            PopulateStackToLeftiest(current.left);
+        }
+
+        // if (current.right != null)
+        // {
+        //     PopulateStack(current.right);
+        // }
+    }
+}
