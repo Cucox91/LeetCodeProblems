@@ -1,0 +1,33 @@
+public class MovingAverage
+{
+    private double _sum = 0;
+    private Queue<int> _myQueue;
+
+    public MovingAverage(int size)
+    {
+        _myQueue = new Queue<int>(size);
+    }
+
+    public double Next(int val)
+    {
+        if (_myQueue.Count < _myQueue.Capacity)
+        {
+            _sum += val;
+            _myQueue.Enqueue(val);
+        }
+        else
+        {
+            _sum -= _myQueue.Dequeue();
+            _sum += val;
+            _myQueue.Enqueue(val);
+        }
+
+        return _sum / _myQueue.Count;
+    }
+}
+
+/**
+ * Your MovingAverage object will be instantiated and called as such:
+ * MovingAverage obj = new MovingAverage(size);
+ * double param_1 = obj.Next(val);
+ */
