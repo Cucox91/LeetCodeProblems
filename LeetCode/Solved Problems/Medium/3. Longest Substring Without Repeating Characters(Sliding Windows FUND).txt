@@ -1,0 +1,42 @@
+
+Solution s = new Solution();
+
+Console.WriteLine(s.LengthOfLongestSubstring("abcabcbb"));
+Console.WriteLine(s.LengthOfLongestSubstring("bbbbb"));
+Console.WriteLine(s.LengthOfLongestSubstring("pwwkew"));
+Console.WriteLine(s.LengthOfLongestSubstring("a"));
+Console.WriteLine(s.LengthOfLongestSubstring("abcdc"));
+
+public class Solution
+{
+     public int LengthOfLongestSubstring(string s)
+     {
+          Bruteforce O(n^1)
+         HashSet<char> subs = new HashSet<char>();
+         int low = 0;
+         int high = 0;
+         int highest = 0;
+
+         while (high < s.Length)
+         {
+             if (subs.Contains(s[high]))
+             {
+                 if (high - low > highest)
+                 {
+                     highest = high - low;
+                 }
+                 low++;
+                 high = low;
+                 subs = new HashSet<char>();
+             }
+             subs.Add(s[high]);
+             high++;
+         }
+
+         if (high - low > highest)
+         {
+             highest = high - low;
+         }
+         return highest;
+     }
+}
